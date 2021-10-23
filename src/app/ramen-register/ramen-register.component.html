@@ -1,0 +1,53 @@
+<p>{{lat}}</p>
+<p>{{lng}}</p>
+<form class="ramens-form">
+  <mat-form-field appearance="fill">
+    <mat-label>日付</mat-label>
+    <input matInput [matDatepicker]="picker">
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+  </mat-form-field>
+<mat-form-field appearance="fill">
+  <mat-label>店名</mat-label>
+  <input matInput placeholder="ex.人類みな麺類">
+</mat-form-field>
+<!-- <mat-form-field appearance="fill">
+  <mat-label>星</mat-label>
+  <mat-slider
+  class="example-margin"
+  [max]="max"
+  [min]="min"
+  [step]="step"
+  [(ngModel)]="value">
+</mat-slider>
+</mat-form-field> -->
+<mat-form-field appearance="fill">
+  <mat-label>ラーメンの種類</mat-label>
+  <mat-select>
+    <mat-option value="one">First option</mat-option>
+    <mat-option value="two">Second option</mat-option>
+  </mat-select>
+</mat-form-field>
+<mat-form-field appearance="fill">
+  <mat-label>感想等</mat-label>
+  <textarea matInput></textarea>
+</mat-form-field>
+<mat-form-field appearance="fill">
+  <mat-label>写真</mat-label>
+  <mat-select>
+    <mat-option value="one">First option</mat-option>
+    <mat-option value="two">Second option</mat-option>
+  </mat-select>
+</mat-form-field>
+<mat-form-field appearance="fill">
+  <mat-label>住所</mat-label>
+  <input matInput name="Postaddress" [(ngModel)]="PostAddress">
+</mat-form-field>
+<mat-form-field appearance="fill">
+  <mat-label>ラーメンの種類</mat-label>
+  <mat-select>
+    <mat-option value="one">First option</mat-option>
+    <mat-option value="two">Second option</mat-option>
+  </mat-select>
+</mat-form-field>
+</form>

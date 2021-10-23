@@ -1,0 +1,38 @@
+<div class="loading" *ngIf="!center">
+  <mat-spinner></mat-spinner>
+</div>
+
+<div class="content" *ngIf="center">
+  <google-map
+  height="80%"
+  width="80%"
+  [center]="center"
+  [zoom]="zoom"
+  [options]="options"
+  (mapClick)="click($event)"
+  >
+    <map-marker
+    [position]="center"
+    [icon]=image
+    ></map-marker>
+    <ng-container >
+      <map-marker
+      *ngFor="let ramen of ramens"
+      [position]="ramen.latlng"
+      [icon]=myPositionImage
+      [label]="ramen.label"
+      (mapClick)="openDetail(ramen.id)"
+      ></map-marker>
+    </ng-container>
+    <ng-container *ngIf="latlngs">
+      <map-marker
+      *ngFor="let latlng of latlngs"
+    [position]="latlng"
+    [icon]=myPositionImage
+    ></map-marker>
+    </ng-container>
+  </google-map>
+</div>
+
+<button (click)="gpsRegister()" routerLink="/">登録</button>
+<app-ramen-register></app-ramen-register>
