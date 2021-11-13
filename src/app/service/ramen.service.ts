@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Ramen } from './ramens';
-import { Ramens } from './mock-ramen';
+import { Ramen } from '../ramens';
+import { Ramens } from '../mock-ramen';
 import { Observable, of } from 'rxjs';
 
 @Injectable({

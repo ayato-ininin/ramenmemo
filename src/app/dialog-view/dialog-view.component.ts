@@ -14,7 +14,15 @@ export class DialogViewComponent implements OnInit {
     private router: Router) {
     this.getValue = { data: this.data.nowLatlng };
     // 受け取った値を、変数にしまう。
-   }
+  }
+
+  getValue: {data:google.maps.LatLng};
+  postDataLat:number;
+  postDataLng:number;
+  param: {
+    lat: number;
+    lng: number;
+  };
 
   ngOnInit(): void {
   // オブジェクトで引き渡せるように設定。
@@ -27,13 +35,7 @@ export class DialogViewComponent implements OnInit {
     this.param = param;
   }
 
-  getValue: any;
-  postDataLat:number;
-  postDataLng:number;
-  param: {
-    lat: number;
-    lng: number;
-  };
+
 
   toRegister() :void{
   this.router.navigate(['/ramenRegister',this.param])

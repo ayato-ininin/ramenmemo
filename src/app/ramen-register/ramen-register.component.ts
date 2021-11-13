@@ -1,5 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, ParamMap } from '@angular/router';
+import { Validators } from '@angular/forms';
+import { FormBuilder } from '@angular/forms';
+import { ramenKinds, reviewStarNumberList } from '../ramens';
+import { RamenRegisterFormService } from '../service/ramen-register-form.service';
+
 
 
 @Component({
@@ -9,21 +14,33 @@ import { ActivatedRoute, ParamMap } from '@angular/router';
 })
 export class RamenRegisterComponent implements OnInit {
 
+  constructor(
+    private route: ActivatedRoute,
+    private fb: FormBuilder,
+    private ramenRegisterFormService:RamenRegisterFormService) {
+}
+
   lat:number;
   lng: number;
   LatlngInput: google.maps.LatLng;
   geocoder: google.maps.Geocoder;
+  ramens: string[] = ramenKinds;
+  reviewNumberList: number[] = reviewStarNumberList;
+  PostAddress: string | void;
 
-  PostAddress='';
-  value = "";
-  min = 0;
-  max = 5;
-  step = 0.5;
+  file: File = null;
+  imgSrc: string | ArrayBuffer = "";
+  reviewRate: string= "";
 
-
-constructor(private route: ActivatedRoute) {
-
-   }
+  ramenRegistration = this.fb.group({
+    datePick: [''],
+    ramenStoreName: ['',Validators.required],
+    ramenStar: ['',Validators.required],
+    ramenKind: ['',Validators.required],
+    review: [''],
+    ramenPicture:[''],
+    postAddress: ['',Validators.required]
+  })
 
   ngOnInit(): void {
     this.route.paramMap.subscribe((params: ParamMap) => {
@@ -31,49 +48,46 @@ constructor(private route: ActivatedRoute) {
       this.lng = +params.get('lng');
     });
     this.LatlngInput = new google.maps.LatLng(this.lat, this.lng);
-    this.geocoder = new google.maps.Geocoder();
-    let newaddress:string;
-
-    this.geocoder.geocode(
-      {
-        location: this.LatlngInput
-      },
-      function(results, status) {
-
-        if (status == google.maps.GeocoderStatus.OK) {
-        //取得が成功した場合
-
-          //住所を取得します。
-          const address = results[0].formatted_address;
-          console.log(address);
-          newaddress = address;
-          console.log(newaddress);
-
-        } else if (status == google.maps.GeocoderStatus.ZERO_RESULTS) {
-          alert("住所が見つかりませんでした。");
-        } else if (status == google.maps.GeocoderStatus.ERROR) {
-          alert("サーバ接続に失敗しました。");
-        } else if (status == google.maps.GeocoderStatus.INVALID_REQUEST) {
-          alert("リクエストが無効でした。");
-        } else if (status == google.maps.GeocoderStatus.OVER_QUERY_LIMIT) {
-          alert("リクエストの制限回数を超えました。");
-        } else if (status == google.maps.GeocoderStatus.REQUEST_DENIED) {
-          alert("サービスが使えない状態でした。");
-        } else if (status == google.maps.GeocoderStatus.UNKNOWN_ERROR) {
-          alert("原因不明のエラーが発生しました。");
-        }
-
-      });
-    // async ??
-
-    console.log(newaddress);
-    this.PostAddress = newaddress;
-
-    console.log(this.PostAddress);
-
+    this.ramenRegisterFormService.geocodeAddress(this.LatlngInput)
+      .then(ramenAddress => this.PostAddress = ramenAddress);
   }
+
+  // get ramenStar() { return this.ramenRegistration.get('ramenStar'); }
+  onSubmit() {
+    console.warn(this.ramenRegistration.value);
+  }
+
+  ramenReviewRate(value: { ramenStar: string; }) {
+    this.ramenRegisterFormService.reviewRateCheck(value).then(
+      (reviewRate:string) => this.reviewRate = reviewRate
+    ).catch((err: string) => {
+      console.log(err)
+      alert(err)
+    });
+  }
+
+  onChangeFile(event) {
+    if (event.target.files.length === 0) {
+      this.file = null;
+      this.imgSrc = "";
+      return;
+    }
+    let reader = new FileReader();
+    this.file = event.target.files[0];
+    reader.onload = () => {
+      this.imgSrc = reader.result;
+    }
+    reader.readAsDataURL(this.file);
+  }
+  // 初期値としてformに送れないため、値をセットするメソッド
+  setValue() {
+    this.ramenRegistration.patchValue({
+      postAddress: this.PostAddress
+    })
   }
 
 
-  // GoogleLatlng  = new google.maps.LatLng()
+  }
+
+
 

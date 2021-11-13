@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Ramen } from '../ramens';
-import { RamenService } from '../ramen.service';
+import { RamenService } from '../service/ramen.service';
 import { Location } from '@angular/common';
 
 @Component({

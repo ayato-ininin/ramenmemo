@@ -1,53 +1,146 @@
 <p>{{lat}}</p>
 <p>{{lng}}</p>
-<form class="ramens-form">
-  <mat-form-field appearance="fill">
-    <mat-label>日付</mat-label>
-    <input matInput [matDatepicker]="picker">
-    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-    <mat-datepicker #picker></mat-datepicker>
-  </mat-form-field>
-<mat-form-field appearance="fill">
-  <mat-label>店名</mat-label>
-  <input matInput placeholder="ex.人類みな麺類">
-</mat-form-field>
-<!-- <mat-form-field appearance="fill">
-  <mat-label>星</mat-label>
-  <mat-slider
-  class="example-margin"
-  [max]="max"
-  [min]="min"
-  [step]="step"
-  [(ngModel)]="value">
-</mat-slider>
-</mat-form-field> -->
-<mat-form-field appearance="fill">
-  <mat-label>ラーメンの種類</mat-label>
-  <mat-select>
-    <mat-option value="one">First option</mat-option>
-    <mat-option value="two">Second option</mat-option>
-  </mat-select>
-</mat-form-field>
-<mat-form-field appearance="fill">
-  <mat-label>感想等</mat-label>
-  <textarea matInput></textarea>
-</mat-form-field>
-<mat-form-field appearance="fill">
-  <mat-label>写真</mat-label>
-  <mat-select>
-    <mat-option value="one">First option</mat-option>
-    <mat-option value="two">Second option</mat-option>
-  </mat-select>
-</mat-form-field>
-<mat-form-field appearance="fill">
-  <mat-label>住所</mat-label>
-  <input matInput name="Postaddress" [(ngModel)]="PostAddress">
-</mat-form-field>
-<mat-form-field appearance="fill">
-  <mat-label>ラーメンの種類</mat-label>
-  <mat-select>
-    <mat-option value="one">First option</mat-option>
-    <mat-option value="two">Second option</mat-option>
-  </mat-select>
-</mat-form-field>
-</form>
+
+<div>
+  <form class="ramens-form" [formGroup]="ramenRegistration" (ngSubmit)="onSubmit()">
+    <!-- 日付フォーム -->
+    <div class="registerContent">
+      <label for="datePick">日付</label><br>
+      <input id="datePick" formControlName="datePick" name="datePick">
+    </div>
+    <!-- 店名フォーム -->
+    <div class="registerContent">
+      <label for="ramenStoreName">店名</label><br>
+      <input
+      id="ramenStoreName"
+      placeholder="ex.人類みな麺類"
+      formControlName="ramenStoreName">
+    </div>
+    <!-- ☆レビューフォーム -->
+    <div class="registerContent">
+      <label for="ramenStar">☆レビュー</label><br>
+      <select
+      formControlName="ramenStar"
+      name="ramenStar"
+      id ="ramenStar"
+      (change)="ramenReviewRate(ramenRegistration.value)">
+        <option
+        [value]="reviewNumber"
+        *ngFor="let reviewNumber of reviewNumberList">
+        {{reviewNumber}}
+        </option>
+      </select>
+      <div class="star-ratings-sprite">
+        <span
+        [style.width]="reviewRate"
+        class="star-ratings-sprite-rating reviewNumber">
+        </span>
+      </div>
+    </div>
+
+      <!-- <div *ngIf="ramenStar.invalid  && (ramenStar.dirty || ramenStar.touched)">
+
+        <div *ngIf="ramenStar.errors?.required">
+          Name is required.
+        </div>
+        <div *ngIf="ramenStar.errors?.minlength">
+          Name must be at least 4 characters long.
+        </div>
+      </div> -->
+
+    <!-- ラーメンの種類フォーム -->
+    <div class="registerContent">
+      <label for="ramenKinds">ラーメンの種類</label><br>
+      <select id="ramenKind" formControlName="ramenKind" name="ramenKind">
+        <option
+        [value]="ramen"
+        *ngFor="let ramen of ramens">
+        {{ramen}}
+        </option>
+      </select>
+    </div>
+    <!-- 感想フォーム -->
+    <div class="registerContent">
+      <label for="review">感想等</label><br>
+      <textarea id="review" formControlName="review" name="review" ></textarea>
+    </div>
+    <!-- 写真フォーム -->
+    <div class="registerContent">
+      <label for="ramenPicture">写真</label><br>
+      <input
+      id="ramenPicture"
+      name="ramenPicture"
+      formControlName="ramenPicture"
+      type="file"
+      accept="image/*"
+      (change)="onChangeFile($event)">
+      <img [src]="imgSrc" alt="" width="30%">
+    </div>
+
+    <!-- 住所フォーム -->
+    <div class="registerContent">
+      <label for="postAddress">住所</label><br>
+      <input class="postInput" id="postAdress" name="postAddress" formControlName="postAddress" value="{{PostAddress}}"><br>
+      <!-- 住所が初期値だとformcontrollに送信できなかったので、setするメソッドをadd -->
+      <button (click)="setValue()">住所確定</button>
+    </div>
+
+    <div class="registerContent">
+      <p>Complete the form to enable button.</p>
+      <button type="submit" [disabled]="!ramenRegistration.valid">Submit</button>
+    </div>
+  </form>
+</div>
+
+
+
+
+<!-- <div>
+  <form class="ramens-form" [formGroup]="ramenRegisration" (ngSubmit)="onSubmit()">
+    <mat-form-field appearance="fill" class="registerContent">
+      <mat-label for="datePick">日付</mat-label>
+      <input id="datePick" formControlName="datePick" matInput [matDatepicker]="picker">
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="registerContent">
+    <mat-label for="ramenStoreName">店名</mat-label>
+    <input id="ramenStoreName" matInput placeholder="ex.人類みな麺類" formControlName="ramenStoreName">
+    </mat-form-field>
+    <h3 class="registerContent">★いくつ？</h3> -->
+    <!-- <mat-slider
+    class="example-margin registerContent"
+    [max]=5
+    [min]=0
+    [step]=0.5
+    name="ramenStar"
+    thumbLabel
+    [displayWith]="formatLabel">
+    </mat-slider> -->
+    <!-- <mat-form-field appearance="fill" class="registerContent">
+      <mat-label for="ramenStar">星(最大5まで)</mat-label>
+      <input matInput formControlName="ramenStar" name="ramenStar" id="ramenStar">
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="registerContent">
+      <mat-label for="ramenKinds">ラーメンの種類</mat-label>
+      <mat-select id="ramenKind" formControlName="ramenKind" name="ramenKind">
+        <mat-option [value]="ramen" *ngFor="let ramen of ramens">{{ramen}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="registerContent">
+      <mat-label for="review">感想等</mat-label>
+      <textarea matInput id="review" formControlName="review" name="review" ></textarea>
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="registerContent">
+      <mat-label>写真</mat-label>
+      <input matInput accept="image/*">
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="registerContent">
+      <mat-label for="postAddress">住所</mat-label>
+      <input matInput id="postAdress" name="postAddress" formControlName="postAddress" value="{{PostAddress}}">
+    </mat-form-field>
+    <p>Complete the form to enable button.</p>
+    <button type="submit" [disabled]="!ramenRegisration.valid">Submit</button>
+  </form>
+
+</div> -->

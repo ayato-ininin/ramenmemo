@@ -10,7 +10,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import {MatSliderModule} from '@angular/material/slider';
-
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 import { AppRoutingModule } from './app-routing.module';
@@ -57,7 +57,8 @@ import {MatCardModule} from '@angular/material/card';
     MatNativeDateModule,
     MatSliderModule,
     FormsModule,
-    MatCardModule
+    MatCardModule,
+    ReactiveFormsModule
   ],
   entryComponents: [
     DialogViewComponent

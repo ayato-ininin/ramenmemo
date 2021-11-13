@@ -1,11 +1,11 @@
-<div class="loading" *ngIf="!center">
+<ng-container class="loading" *ngIf="!center">
   <mat-spinner></mat-spinner>
-</div>
+</ng-container>
 
 <div class="content" *ngIf="center">
   <google-map
-  height="80%"
-  width="80%"
+  height="100%"
+  width="100%"
   [center]="center"
   [zoom]="zoom"
   [options]="options"
@@ -27,12 +27,11 @@
     <ng-container *ngIf="latlngs">
       <map-marker
       *ngFor="let latlng of latlngs"
-    [position]="latlng"
-    [icon]=myPositionImage
-    ></map-marker>
+      [position]="latlng"
+      [icon]=myPositionImage>
+      </map-marker>
     </ng-container>
   </google-map>
 </div>
 
 <button (click)="gpsRegister()" routerLink="/">登録</button>
-<app-ramen-register></app-ramen-register>
